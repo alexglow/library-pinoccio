@@ -425,7 +425,7 @@ static void scoutDigitalStateChangeTimerHandler(SYS_Timer_t *timer) {
       }
 
       val = Scout.pinRead(pin);
-      mode = Scout.getRegisterPinMode(pin);
+      mode = Scout.digitalPinMode[i];
 
       if (Scout.digitalPinState[i] != val) {
         if (Scout.eventVerboseOutput) {
@@ -438,7 +438,6 @@ static void scoutDigitalStateChangeTimerHandler(SYS_Timer_t *timer) {
           Serial.println(F(")"));
         }
         Scout.digitalPinState[i] = val;
-        Scout.digitalPinMode[i] = mode;
         Scout.digitalPinEventHandler(pin, val, mode);
       }
     }
@@ -459,7 +458,7 @@ static void scoutAnalogStateChangeTimerHandler(SYS_Timer_t *timer) {
       }
 
       val = Scout.pinRead(i+A0); // explicit digital pins until we can update core
-      mode = Scout.getRegisterPinMode(i+A0);
+      mode = Scout.analogPinMode[i];
 
       if (Scout.analogPinState[i] != val) {
         if (Scout.eventVerboseOutput) {
@@ -472,7 +471,6 @@ static void scoutAnalogStateChangeTimerHandler(SYS_Timer_t *timer) {
           Serial.println(F(")"));
         }
         Scout.analogPinState[i] = val;
-        Scout.analogPinMode[i] = mode;
         Scout.analogPinEventHandler(i, val, mode);
       }
     }
