@@ -324,12 +324,25 @@ bool PinoccioScout::makeDisabled(uint8_t pin) {
   return true;
 }
 
-bool PinoccioScout::setMode(uint8_t pin, uint8_t mode) {
+bool PinoccioScout::setMode(uint8_t pin, int8_t mode) {
   if (isPinReserved(pin)) {
     return false;
   }
 
-  pinMode(pin, mode);
+  switch(mode) {
+    case PINMODE_DISABLED:
+    case PINMODE_INPUT:
+      pinMode(pin, INPUT);
+      break;
+    case PINMODE_OUTPUT:
+      pinMode(pin, OUTPUT);
+      break;
+    case PINMODE_INPUT_PULLUP:
+      pinMode(pin, INPUT_PULLUP);
+      break;
+    default:
+      return false;
+  }
 
   if (isDigitalPin(pin)) {
     digitalPinMode[pin-2] = mode;
