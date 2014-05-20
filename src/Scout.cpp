@@ -211,19 +211,19 @@ void PinoccioScout::saveState() {
   for (int i=0; i<7; i++) {
     if (isPinReserved(i+2)) {
       digitalPinMode[i] = PINMODE_RESERVED;
-      digitalPinState[i] = -1;
     } else {
-      makeDisabled(i+2);
+      digitalPinMode[i] = PINMODE_UNSET;
     }
+    digitalPinState[i] = -1;
   }
 
   for (int i=0; i<8; i++) {
     if (isPinReserved(i+A0)) {
       analogPinMode[i] = PINMODE_RESERVED;
-      analogPinState[i] = -1;
     } else {
-      makeDisabled(i+A0);
+      analogPinMode[i] = PINMODE_UNSET;
     }
+    analogPinState[i] = -1;
   }
 
   batteryPercentage = constrain(HAL_FuelGaugePercent(), 0, 100);
