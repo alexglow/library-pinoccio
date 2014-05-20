@@ -210,7 +210,7 @@ void PinoccioScout::setStateChangeEventCycle(uint32_t digitalInterval, uint32_t 
 void PinoccioScout::saveState() {
   for (int i=0; i<7; i++) {
     if (isPinReserved(i+2)) {
-      digitalPinMode[i] = -2;
+      digitalPinMode[i] = PINMODE_RESERVED;
       digitalPinState[i] = -1;
     } else {
       makeDisabled(i+2);
@@ -219,7 +219,7 @@ void PinoccioScout::saveState() {
 
   for (int i=0; i<8; i++) {
     if (isPinReserved(i+A0)) {
-      analogPinMode[i] = -2;
+      analogPinMode[i] = PINMODE_RESERVED;
       analogPinState[i] = -1;
     } else {
       makeDisabled(i+A0);
@@ -262,8 +262,14 @@ bool PinoccioScout::makeInput(uint8_t pin, bool enablePullup) {
     return false;
   }
 
-  uint8_t mode = enablePullup ? INPUT_PULLUP : INPUT;
-  pinMode(pin, mode);
+  uint8_t mode;
+  if (enablePullup) {
+    pinMode(pin, INPUT_PULLUP);
+    mode = PINMODE_INPUT_PULLUP;
+  } else {
+    pinMode(pin, INPUT);
+    mode = PINMODE_INPUT;
+  }
 
   if (isDigitalPin(pin)) {
     digitalPinMode[pin-2] = mode;
@@ -286,12 +292,12 @@ bool PinoccioScout::makeOutput(uint8_t pin) {
   pinMode(pin, OUTPUT);
 
   if (isDigitalPin(pin)) {
-    digitalPinMode[pin-2] = OUTPUT;
+    digitalPinMode[pin-2] = PINMODE_OUTPUT;
     digitalPinState[pin-2] = Scout.pinRead(pin);
   }
 
   if (isAnalogPin(pin)) {
-    analogPinMode[pin-A0] = OUTPUT;
+    analogPinMode[pin-A0] = PINMODE_OUTPUT;
     analogPinState[pin-A0] = Scout.pinRead(pin);
   }
 
@@ -306,12 +312,12 @@ bool PinoccioScout::makeDisabled(uint8_t pin) {
   pinMode(pin, INPUT);  // input-no-pullup, for lowest power draw
 
   if (isDigitalPin(pin)) {
-    digitalPinMode[pin-2] = -1;
+    digitalPinMode[pin-2] = PINMODE_DISABLED;
     digitalPinState[pin-2] = -1;
   }
 
   if (isAnalogPin(pin)) {
-    analogPinMode[pin-A0] = -1;
+    analogPinMode[pin-A0] = PINMODE_DISABLED;
     analogPinState[pin-A0] = -1;
   }
 

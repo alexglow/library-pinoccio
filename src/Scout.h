@@ -118,6 +118,13 @@ class PinoccioScout : public PinoccioClass {
     // sleep can be canceled by passing 0, NULL.
     void scheduleSleep(uint32_t ms, char *cmd);
 
+    enum {
+      PINMODE_RESERVED = -2,
+      PINMODE_DISABLED = -1,
+      PINMODE_INPUT = 0,
+      PINMODE_OUTPUT = 1,
+      PINMODE_INPUT_PULLUP = 2,
+    };
   protected:
     void checkStateChange();
 

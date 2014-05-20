@@ -1155,27 +1155,27 @@ static StringBuffer analogPinReportHQ(void) {
 }
 
 static numvar pinConstHigh(void) {
-  return 1;
+  return HIGH;
 }
 
 static numvar pinConstLow(void) {
-  return 0;
+  return LOW;
 }
 
 static numvar pinConstDisabled(void) {
-  return -1;
+  return PinoccioScout::PINMODE_DISABLED;
 }
 
 static numvar pinConstInput(void) {
-  return 0;
+  return PinoccioScout::PINMODE_INPUT;
 }
 
 static numvar pinConstOutput(void) {
-  return 1;
+  return PinoccioScout::PINMODE_OUTPUT;
 }
 
 static numvar pinConstInputPullup(void) {
-  return 2;
+  return PinoccioScout::PINMODE_INPUT_PULLUP;
 }
 
 static numvar pinMakeInput(void) {
@@ -1189,7 +1189,7 @@ static numvar pinMakeInput(void) {
   }
 
   bool pullup = true;
-  if (getarg(0) == 2 && getarg(2) == 0) {
+  if (getarg(0) == 2 && getarg(2) == pinConstInput()) {
     pullup = false;
   }
 
