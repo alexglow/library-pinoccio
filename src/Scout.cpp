@@ -428,7 +428,26 @@ int8_t PinoccioScout::getPinFromName(const char* name) {
 }
 
 bool PinoccioScout::isPinReserved(uint8_t pin) {
-  return (Backpacks::used_pins & Pbbe::LogicalPin(pin).mask());
+  if (Backpacks::used_pins & Pbbe::LogicalPin(pin).mask())
+    return true;
+
+  // TODO: Make this less hardcoded
+  switch (pin) {
+    case SCL:
+    case SDA:
+    case BATT_ALERT:
+    case CHG_STATUS:
+    case BACKPACK_BUS:
+    case VCC_ENABLE:
+    case RX0:
+    case RX1:
+    case LED_RED:
+    case LED_GREEN:
+    case LED_BLUE:
+      return true;
+    default:
+      return false;
+  }
 }
 
 static void scoutDigitalStateChangeTimerHandler(SYS_Timer_t *timer) {
