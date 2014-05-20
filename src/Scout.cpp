@@ -325,6 +325,14 @@ bool PinoccioScout::makeDisabled(uint8_t pin) {
   return true;
 }
 
+void PinoccioScout::makeUnsetDisconnected() {
+  for (int i=0; i<NUM_DIGITAL_PINS; i++) {
+    // setMode will already skip reserved pins
+    if (getPinMode(i) == PINMODE_UNSET)
+      setMode(i, PINMODE_DISCONNECTED);
+  }
+}
+
 bool PinoccioScout::setMode(uint8_t pin, int8_t mode) {
   if (isPinReserved(pin)) {
     return false;

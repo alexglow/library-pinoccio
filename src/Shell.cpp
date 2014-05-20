@@ -97,6 +97,7 @@ static numvar pinSetMode(void);
 static numvar pinRead(void);
 static numvar pinWrite(void);
 static numvar pinSave(void);
+static numvar pinOthersDisconnected(void);
 static numvar digitalPinReport(void);
 static numvar analogPinReport(void);
 
@@ -268,6 +269,7 @@ void PinoccioShell::setup() {
   addBitlashFunction("pin.read", (bitlash_function) pinRead);
   addBitlashFunction("pin.write", (bitlash_function) pinWrite);
   addBitlashFunction("pin.save", (bitlash_function) pinSave);
+  addBitlashFunction("pin.othersdisconnected", (bitlash_function) pinOthersDisconnected);
   addBitlashFunction("pin.report.digital", (bitlash_function) digitalPinReport);
   addBitlashFunction("pin.report.analog", (bitlash_function) analogPinReport);
 
@@ -1375,6 +1377,13 @@ static numvar pinSave(void) {
   }
 
   return true;
+}
+
+static numvar pinOthersDisconnected(void) {
+  if (!checkArgs(0, 0, F("usage: pin.othersdisconnected()"))) {
+    return 0;
+  }
+  Scout.makeUnsetDisconnected();
 }
 
 static numvar digitalPinReport(void) {
