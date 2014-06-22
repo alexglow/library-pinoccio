@@ -26,7 +26,7 @@ class HalRgbLed {
     void blue();
     void cyan();
     void purple();
-	void beccapurple();
+    void beccapurple();
     void magenta();
     void yellow();
     void orange();
